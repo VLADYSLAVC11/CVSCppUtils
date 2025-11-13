@@ -19,7 +19,7 @@ add_test(NAME CvsCppUtilsTest COMMAND CvsCppUtilsTest)
 
 if (DEFINED ENV{BOOST_INCLUDE_DIR})
     set(BOOST_INCLUDE_DIR $ENV{BOOST_INCLUDE_DIR})
-else ()
+elseif (NOT DEFINED BOOST_INCLUDE_DIR)
     set(BOOST_INCLUDE_DIR "") # set by Qt Creator wizard
 endif ()
 if (BOOST_INCLUDE_DIR STREQUAL "")
