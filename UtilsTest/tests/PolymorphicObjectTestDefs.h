@@ -20,9 +20,9 @@ class Test0Obj4;
 class Test0Obj : public Polymorhic<1, 4, Test0Obj, TEST_OBJECTS_0_TYPES_LIST>
 {
 public:
-    using BaseClass = Polymorhic<1, 4, Test0Obj, TEST_OBJECTS_0_TYPES_LIST>;
-    id_type Init(int num);
+    PM_VIRTUAL_CONSTRUCTOR(Test0Obj);
     PM_VIRTUAL_DESTRUCTOR(TEST_OBJECTS_0_TYPES_LIST, Test0Obj);
+    id_type Init(int num);
     PM_VIRTUAL int GetValue() const;
 };
 

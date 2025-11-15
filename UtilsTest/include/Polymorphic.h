@@ -33,15 +33,24 @@ switch (TypeId()) \
     default: throw BadPolymorphicObject {}; \
 }
 
+#define PM_VIRTUAL_CONSTRUCTOR(self_type) \
+public: \
+using Polymorhic::Polymorhic; \
+template<class T, class ... TParams> \
+self_type(TParams && ... params) \
+{ \
+    if(!Polymorhic::Init<T, TParams...>(std::forward<TParams>(params)...)) \
+        throw BadPolymorphicObject {}; \
+} \
+self_type() noexcept = default; \
+self_type(self_type && obj) noexcept = default; \
+self_type& operator = (self_type && obj) noexcept = default
+
 #define PM_VIRTUAL_DESTRUCTOR(types_list, self_type) \
 friend class PolymorhicBase; \
 protected: \
 BOOST_PP_SEQ_FOR_EACH(PM_DTOR_DECL, obj, BOOST_PP_VARIADIC_TO_SEQ(types_list)) \
 public: \
-self_type() = default; \
-self_type(self_type && obj) noexcept = default; \
-self_type& operator = (self_type && obj) noexcept = default; \
-using Polymorhic::Polymorhic; \
 ~self_type() noexcept
 
 #define PM_VIRTUAL_DESTRUCTOR_DEF(types_list, self_type) \
