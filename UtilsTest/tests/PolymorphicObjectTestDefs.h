@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Polymorphic.h"
+#include "Polymorphic.h"
 
 /*---------------------------------------------------------------------------*/
 

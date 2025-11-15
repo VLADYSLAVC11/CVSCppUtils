@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../SmartEnum.h"
+#include "SmartEnum.h"
 #include "SmartEnumTestDefsFwd.h"
 
 #include <string>
