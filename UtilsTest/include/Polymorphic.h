@@ -35,19 +35,21 @@ switch (TypeId()) \
 
 #define PM_VIRTUAL_CONSTRUCTOR(self_type) \
 public: \
-using Polymorhic::Polymorhic; \
+using Polymorphic::Polymorphic; \
 template<class T, class ... TParams> \
-self_type(TParams && ... params) \
+static self_type MakePolymorphic(TParams && ... params) \
 { \
-    if(!Polymorhic::Init<T, TParams...>(std::forward<TParams>(params)...)) \
+    self_type result; \
+    if(!((Polymorphic&)result).Init<T, TParams...>(std::forward<TParams>(params)...)) \
         throw BadPolymorphicObject {}; \
+    return result; \
 } \
 self_type() noexcept = default; \
 self_type(self_type && obj) noexcept = default; \
 self_type& operator = (self_type && obj) noexcept = default
 
 #define PM_VIRTUAL_DESTRUCTOR(types_list, self_type) \
-friend class PolymorhicBase; \
+friend class PolymorphicBase; \
 protected: \
 BOOST_PP_SEQ_FOR_EACH(PM_DTOR_DECL, obj, BOOST_PP_VARIADIC_TO_SEQ(types_list)) \
 public: \
@@ -72,15 +74,15 @@ public:
     }
 };
 
-class PolymorhicBase
+class PolymorphicBase
     : protected boost::noncopyable
 {
 public:
     using id_type = std::uint32_t;
     using block_type = std::uint32_t;
 
-    PolymorhicBase() noexcept = default;
-    ~PolymorhicBase() noexcept = default;
+    PolymorphicBase() noexcept = default;
+    ~PolymorphicBase() noexcept = default;
 
 protected:
     static constexpr std::size_t AlignBlock(std::size_t value) noexcept
@@ -97,12 +99,12 @@ protected:
 };
 
 template<size_t MaxTypeSizeof, size_t Alignment, class TDerived, class ... TObjectsList>
-class alignas(Alignment) Polymorhic : public PolymorhicBase
+class alignas(Alignment) Polymorphic : public PolymorphicBase
 {
 public:
-    Polymorhic() noexcept = default;
+    Polymorphic() noexcept = default;
 
-    Polymorhic(Polymorhic && rhs) noexcept
+    Polymorphic(Polymorphic && rhs) noexcept
     {
         m_storageBuffer = rhs.m_storageBuffer;
         m_currentTypeId = rhs.m_currentTypeId;
@@ -110,25 +112,25 @@ public:
     }
 
     template<class T>
-    Polymorhic(const T& rhs)
+    Polymorphic(const T& rhs)
     {
         SetTypeId<T>();
         new (m_storageBuffer.data()) T(rhs);
     }
     
     template<class T>
-    Polymorhic(T && rhs)
+    Polymorphic(T && rhs)
     {
         SetTypeId<T>();
         new (m_storageBuffer.data()) T(rhs);
     }
 
-    ~Polymorhic() noexcept
+    ~Polymorphic() noexcept
     {
         Destroy();
     }
 
-    Polymorhic& operator = (Polymorhic && rhs) noexcept
+    Polymorphic& operator = (Polymorphic && rhs) noexcept
     {
         if(&rhs != this)
         {
@@ -140,13 +142,13 @@ public:
         return *this;
     }
 
-    bool operator == (const Polymorhic& rhs) const
+    bool operator == (const Polymorphic& rhs) const
     {
         return m_currentTypeId == rhs.m_currentTypeId &&
                memcmp(m_storageBuffer.data(), rhs.m_storageBuffer.data(), sizeof(m_storageBuffer)) == 0;
     }
 
-    bool operator != (const Polymorhic& rhs) const
+    bool operator != (const Polymorphic& rhs) const
     {
         return m_currentTypeId != rhs.m_currentTypeId ||
                memcmp(m_storageBuffer.data(), rhs.m_storageBuffer.data(), sizeof(m_storageBuffer)) != 0;

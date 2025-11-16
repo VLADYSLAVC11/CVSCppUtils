@@ -10,10 +10,10 @@ Test0Obj::id_type Test0Obj::Init(int num)
 {
     switch(num)
     {
-        case 1: Polymorhic::Init<Test0Obj1>(); break;
-        case 2: Polymorhic::Init<Test0Obj2>(); break;
-        case 3: Polymorhic::Init<Test0Obj3>(); break;
-        case 4: Polymorhic::Init<Test0Obj4>(); break;
+        case 1: Polymorphic::Init<Test0Obj1>(); break;
+        case 2: Polymorphic::Init<Test0Obj2>(); break;
+        case 3: Polymorphic::Init<Test0Obj3>(); break;
+        case 4: Polymorphic::Init<Test0Obj4>(); break;
         default: break;
     }
 

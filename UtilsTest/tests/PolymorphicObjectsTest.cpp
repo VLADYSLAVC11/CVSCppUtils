@@ -15,7 +15,7 @@ using namespace boost::unit_test;
 template<size_t MaxTypeSizeof, size_t Alignment, class TDerived, class ... TObjectsList>
 std::ostream& operator << (
     std::ostream& out
-    ,   const Polymorhic<MaxTypeSizeof, Alignment, TDerived, TObjectsList...>& polyObj
+    ,   const Polymorphic<MaxTypeSizeof, Alignment, TDerived, TObjectsList...>& polyObj
     )
 {
     if(polyObj.IsNull())
@@ -182,7 +182,7 @@ BOOST_DATA_TEST_CASE(CVS_CPP_UTILS_POLYMORPHIC_TEST0_OBJECTS_IN_VECTOR, data::xr
         case 1: testObjVec.emplace_back(Test0Obj1()); break;
         case 2: testObjVec.emplace_back(Test0Obj2()); break;
         case 3: testObjVec.emplace_back(Test0Obj3()); break;
-        case 4: testObjVec.emplace_back(Test0Obj4()); break;
+        case 4: testObjVec.emplace_back(Test0Obj::MakePolymorphic<Test0Obj4>()); break;
         default: break;
         }
 

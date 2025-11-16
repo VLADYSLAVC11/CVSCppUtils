@@ -17,7 +17,7 @@ class Test0Obj4;
 
 /*---------------------------------------------------------------------------*/
 
-class Test0Obj : public Polymorhic<1, 4, Test0Obj, TEST_OBJECTS_0_TYPES_LIST>
+class Test0Obj : public Polymorphic<1, 4, Test0Obj, TEST_OBJECTS_0_TYPES_LIST>
 {
 public:
     PM_VIRTUAL_CONSTRUCTOR(Test0Obj);
@@ -44,5 +44,7 @@ class Test0Obj3 : public Test0ObjImpl<3> {};
 class Test0Obj4 : public Test0ObjImpl<4> {};
 
 /*---------------------------------------------------------------------------*/
+
+
 
 } // namespace Cvs::Utils::Test
